@@ -1,6 +1,6 @@
 import { storage } from "./storage";
 
-async function seed() {
+export async function seed() {
   console.log("Seeding database...");
 
   // Seed Tech Posts
@@ -149,10 +149,7 @@ async function seed() {
   console.log("✓ Products seeded");
 
   console.log("Database seeding completed!");
-  process.exit(0);
 }
 
-seed().catch((error) => {
-  console.error("Seeding failed:", error);
-  process.exit(1);
-});
+// No auto-run here. Exported so callers can run seeding on demand.
+// Example: call seed() from server startup when running in mock mode.

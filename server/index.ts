@@ -1,6 +1,8 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
+import { hasDatabase } from "./db";
+import { seed } from "./seed";
 import { createServer } from "http";
 
 const app = express();
@@ -60,6 +62,17 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // If there's no database configured (mock mode) seed the in-memory storage
+  // so the API has sample data for development and testing.
+  if (!hasDatabase) {
+    try {
+      await seed();
+      log("mock data seeded", "seed");
+    } catch (err) {
+      console.warn("mock seeding failed:", err);
+    }
+  }
+
   await registerRoutes(httpServer, app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

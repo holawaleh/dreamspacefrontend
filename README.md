@@ -44,6 +44,8 @@ Tip: If you don't have a database available, you can run the server with an in-m
 USE_MOCKS=1
 ```
 
+When mock mode is enabled the server will automatically seed the in-memory storage with sample data so API endpoints return useful test data.
+
 1. Build for production
 
 ```bash
