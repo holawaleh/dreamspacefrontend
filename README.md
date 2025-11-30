@@ -10,14 +10,14 @@ This repository contains the client and server pieces for the Dreamspace fronten
 npm install
 ```
 
-2. Copy the environment template and fill your secrets
+1. Copy the environment template and fill your secrets
 
 ```bash
 cp .env.example .env
 # Edit .env and set DATABASE_URL and any other required keys
 ```
 
-3. Run the app locally
+1. Run the app locally
 
 - Start both server + client (development):
 
@@ -37,14 +37,14 @@ npm run dev:server
 npm run dev:client
 ```
 
-4. Build for production
+1. Build for production
 
 ```bash
 npm run build
 npm start
 ```
 
-5. Database migrations (drizzle)
+1. Database migrations (drizzle)
 
 ```bash
 npm run db:push
