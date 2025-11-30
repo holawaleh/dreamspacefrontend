@@ -1,5 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { Menu, ShoppingCart, User } from "lucide-react";
+import ThemeToggle from "@/components/ui/theme-toggle";
+import FeedbackPanel from "@/components/feedbackPanel";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -16,6 +18,8 @@ export function Navbar() {
     { label: "Tech", path: "/tech" },
     { label: "Tutorials", path: "/tutorials" },
     { label: "Software", path: "/software" },
+    { label: "Firmware", path: "/firmware" },
+    { label: "Updates", path: "/updates" },
     { label: "Sales", path: "/sales" },
   ];
 
@@ -47,6 +51,8 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
+          {/* Theme toggle */}
+          <ThemeToggle />
           <Link href="/admin">
             <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary">
               <User className="h-5 w-5" />
@@ -152,6 +158,7 @@ export function Footer() {
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-background font-sans text-foreground">
+      <FeedbackPanel />
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />

@@ -10,6 +10,8 @@ import Tutorials from "@/pages/tutorials";
 import Software from "@/pages/software";
 import Sales from "@/pages/sales";
 import Admin from "@/pages/admin";
+import Firmware from "@/pages/firmware";
+import Updates from "@/pages/updates";
 
 function Router() {
   return (
@@ -18,6 +20,8 @@ function Router() {
       <Route path="/tech" component={Tech} />
       <Route path="/tutorials" component={Tutorials} />
       <Route path="/software" component={Software} />
+      <Route path="/firmware" component={Firmware} />
+      <Route path="/updates" component={Updates} />
       <Route path="/sales" component={Sales} />
       <Route path="/admin" component={Admin} />
       <Route component={NotFound} />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { 
   LayoutDashboard, 
@@ -18,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import logoIcon from "@assets/{837057B0-249A-449F-879F-20E9503E064F}_1764503603089.png";
+ 
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -158,6 +159,15 @@ export default function Admin() {
               </Card>
             </TabsContent>
 
+            <TabsContent value="feedback" className="mt-0">
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Recent Feedback</h3>
+                <p className="text-sm text-muted-foreground">Feedback submitted by users (from feedback panel).</p>
+                {/* For now show latest admin note as feedback placeholder */}
+                <FeedbackList />
+              </div>
+            </TabsContent>
+
             {/* Add other tabs as needed */}
           </Tabs>
         </div>
@@ -194,6 +204,28 @@ function StatCard({ title, value, change }: { title: string, value: string, chan
         </div>
       </CardContent>
     </Card>
+  );
+}
+
+function FeedbackList() {
+  const [note, setNote] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    fetch('/api/admin/note')
+      .then((r) => r.json())
+      .then((data) => {
+        if (!mounted) return;
+        setNote(data?.content ?? 'No feedback yet');
+      })
+      .catch(() => setNote('Failed to load feedback'));
+    return () => { mounted = false };
+  }, []);
+
+  return (
+    <div className="border rounded-md p-4 bg-background/50">
+      <p className="text-sm text-muted-foreground whitespace-pre-wrap">{note}</p>
+    </div>
   );
 }
 
