@@ -37,6 +37,13 @@ npm run dev:server
 npm run dev:client
 ```
 
+Tip: If you don't have a database available, you can run the server with an in-memory mock storage. Copy `.env.example` to `.env` and set:
+
+```bash
+# enable mock server (the server will use in-memory storage instead of a DB)
+USE_MOCKS=1
+```
+
 1. Build for production
 
 ```bash

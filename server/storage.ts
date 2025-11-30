@@ -18,7 +18,7 @@ import {
   products,
   adminNotes
 } from "@shared/schema";
-import { db } from "./db";
+import { db, hasDatabase } from "./db";
 import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
@@ -186,4 +186,156 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-export const storage = new DatabaseStorage();
+// A lightweight in-memory mock storage used when no database is configured.
+export class MockStorage implements IStorage {
+  private userCounter = 1;
+  private postCounter = 1;
+  private tutorialCounter = 1;
+  private softwareCounter = 1;
+  private productCounter = 1;
+  private noteCounter = 1;
+
+  private users: User[] = [];
+  private techPosts: TechPost[] = [];
+  private tutorials: Tutorial[] = [];
+  private softwareList: Software[] = [];
+  private products: Product[] = [];
+  private adminNotes: AdminNote[] = [];
+
+  async getUser(id: string) {
+    return this.users.find((u) => u.id === id);
+  }
+
+  async getUserByUsername(username: string) {
+    return this.users.find((u) => u.username === username);
+  }
+
+  async createUser(user: InsertUser) {
+    const newUser: User = { id: String(this.userCounter++), username: user.username, password: (user as any).password };
+    this.users.push(newUser);
+    return newUser;
+  }
+
+  async getAllTechPosts() {
+    return [...this.techPosts].sort((a, b) => (new Date(b.date || 0).valueOf() - new Date(a.date || 0).valueOf()));
+  }
+
+  async getTechPost(id: number) {
+    return this.techPosts.find((p) => p.id === id);
+  }
+
+  async createTechPost(post: InsertTechPost) {
+    const newPost: TechPost = { id: this.postCounter++, title: post.title, category: post.category, excerpt: post.excerpt || "", content: post.content, imageUrl: post.imageUrl, date: (post.date as any) || new Date().toISOString() };
+    this.techPosts.push(newPost);
+    return newPost;
+  }
+
+  async updateTechPost(id: number, post: Partial<InsertTechPost>) {
+    const idx = this.techPosts.findIndex((p) => p.id === id);
+    if (idx === -1) return undefined;
+    const updated = { ...this.techPosts[idx], ...post } as TechPost;
+    this.techPosts[idx] = updated;
+    return updated;
+  }
+
+  async deleteTechPost(id: number) {
+    this.techPosts = this.techPosts.filter((p) => p.id !== id);
+  }
+
+  async getAllTutorials() {
+    return [...this.tutorials].sort((a, b) => (new Date(b.date || 0).valueOf() - new Date(a.date || 0).valueOf()));
+  }
+
+  async getTutorial(id: number) {
+    return this.tutorials.find((t) => t.id === id);
+  }
+
+  async createTutorial(tutorial: InsertTutorial) {
+    const newT: Tutorial = { id: this.tutorialCounter++, title: tutorial.title, level: tutorial.level, duration: tutorial.duration, description: tutorial.description, imageUrl: tutorial.imageUrl };
+    this.tutorials.push(newT);
+    return newT;
+  }
+
+  async updateTutorial(id: number, tutorial: Partial<InsertTutorial>) {
+    const idx = this.tutorials.findIndex((t) => t.id === id);
+    if (idx === -1) return undefined;
+    const updated = { ...this.tutorials[idx], ...tutorial } as Tutorial;
+    this.tutorials[idx] = updated;
+    return updated;
+  }
+
+  async deleteTutorial(id: number) {
+    this.tutorials = this.tutorials.filter((t) => t.id !== id);
+  }
+
+  async getAllSoftware() {
+    return this.softwareList;
+  }
+
+  async getSoftware(id: number) {
+    return this.softwareList.find((s) => s.id === id);
+  }
+
+  async createSoftware(soft: InsertSoftware) {
+    const newS: Software = { id: this.softwareCounter++, name: soft.name, version: soft.version, description: soft.description, size: soft.size, downloadUrl: soft.downloadUrl, date: (soft as any).date || new Date().toISOString() };
+    this.softwareList.push(newS);
+    return newS;
+  }
+
+  async updateSoftware(id: number, soft: Partial<InsertSoftware>) {
+    const idx = this.softwareList.findIndex((s) => s.id === id);
+    if (idx === -1) return undefined;
+    const updated = { ...this.softwareList[idx], ...soft } as Software;
+    this.softwareList[idx] = updated;
+    return updated;
+  }
+
+  async deleteSoftware(id: number) {
+    this.softwareList = this.softwareList.filter((s) => s.id !== id);
+  }
+
+  async getAllProducts() {
+    return this.products;
+  }
+
+  async getProduct(id: number) {
+    return this.products.find((p) => p.id === id);
+  }
+
+  async createProduct(product: InsertProduct) {
+    const newP: Product = { id: this.productCounter++, name: product.name, price: product.price, rating: product.rating, imageUrl: product.imageUrl, badge: product.badge || null, description: product.description };
+    this.products.push(newP);
+    return newP;
+  }
+
+  async updateProduct(id: number, product: Partial<InsertProduct>) {
+    const idx = this.products.findIndex((p) => p.id === id);
+    if (idx === -1) return undefined;
+    const updated = { ...this.products[idx], ...product } as Product;
+    this.products[idx] = updated;
+    return updated;
+  }
+
+  async deleteProduct(id: number) {
+    this.products = this.products.filter((p) => p.id !== id);
+  }
+
+  async getAdminNote() {
+    return this.adminNotes.slice(-1)[0] as AdminNote | undefined;
+  }
+
+  async saveAdminNote(note: InsertAdminNote) {
+    const existing = await this.getAdminNote();
+    if (existing) {
+      const updated: AdminNote = { ...existing, content: note.content, updatedAt: new Date().toISOString() };
+      const idx = this.adminNotes.findIndex((n) => n.id === existing.id);
+      if (idx !== -1) this.adminNotes[idx] = updated;
+      return updated;
+    }
+    const newNote: AdminNote = { id: this.noteCounter++, content: note.content, updatedAt: new Date().toISOString() };
+    this.adminNotes.push(newNote);
+    return newNote;
+  }
+}
+
+export const storage: IStorage = hasDatabase && db ? new DatabaseStorage() : new MockStorage();

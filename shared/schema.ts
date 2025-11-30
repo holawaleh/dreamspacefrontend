@@ -54,8 +54,9 @@ export interface Tutorial {
   duration: string; // e.g. "45 mins"
   description: string;
   imageUrl?: string;
+  date?: string | Date;
 }
-export type InsertTutorial = Omit<Tutorial, "id">;
+export type InsertTutorial = Omit<Tutorial, "id"> & Partial<Pick<Tutorial, "date">>;
 
 export const insertTutorialSchema = z.object({
   title: z.string().min(1),
@@ -63,6 +64,11 @@ export const insertTutorialSchema = z.object({
   duration: z.string().min(1),
   description: z.string().min(1),
   imageUrl: z.string().optional(),
+  date: z.preprocess((val) => {
+    if (val === undefined || val === null) return undefined;
+    if (typeof val === "string" || typeof val === "number" || val instanceof Date) return new Date(val as any);
+    return undefined;
+  }, z.date().optional()),
 });
 
 // Software
