@@ -154,7 +154,7 @@ export default function Home() {
                     {post.excerpt}
                   </p>
                   <div className="mt-4 flex items-center text-xs text-muted-foreground">
-                    <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                    <span>{post.date ? new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ""}</span>
                     <span className="mx-2">•</span>
                     <span>5 min read</span>
                   </div>

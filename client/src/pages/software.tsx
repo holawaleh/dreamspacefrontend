@@ -51,7 +51,7 @@ export default function SoftwarePage() {
                       </div>
                       <p className="text-muted-foreground mb-2">{app.description}</p>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                        <span>Updated: {new Date(app.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                        <span>Updated: {app.date ? new Date(app.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ""}</span>
                         <span>Size: {app.size}</span>
                       </div>
                     </div>

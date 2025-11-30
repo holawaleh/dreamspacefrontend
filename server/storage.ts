@@ -56,40 +56,40 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
+    const result = (await db.select().from(users).where(eq(users.id, id))) as unknown as User[];
+    const user = result[0];
     return user || undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
+    const result = (await db.select().from(users).where(eq(users.username, username))) as unknown as User[];
+    const user = result[0];
     return user || undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values(insertUser)
-      .returning();
-    return user;
+    const result = (await db.insert(users).values(insertUser).returning()) as unknown as User[];
+    return result[0];
   }
 
   async getAllTechPosts(): Promise<TechPost[]> {
-    return db.select().from(techPosts).orderBy(desc(techPosts.date));
+    return (await db.select().from(techPosts).orderBy(desc(techPosts.date))) as unknown as TechPost[];
   }
 
   async getTechPost(id: number): Promise<TechPost | undefined> {
-    const [post] = await db.select().from(techPosts).where(eq(techPosts.id, id));
+    const result = (await db.select().from(techPosts).where(eq(techPosts.id, id))) as unknown as TechPost[];
+    const post = result[0];
     return post || undefined;
   }
 
   async createTechPost(post: InsertTechPost): Promise<TechPost> {
-    const [newPost] = await db.insert(techPosts).values(post).returning();
-    return newPost;
+    const result = (await db.insert(techPosts).values(post).returning()) as unknown as TechPost[];
+    return result[0];
   }
 
   async updateTechPost(id: number, post: Partial<InsertTechPost>): Promise<TechPost | undefined> {
-    const [updated] = await db.update(techPosts).set(post).where(eq(techPosts.id, id)).returning();
-    return updated || undefined;
+    const result = (await db.update(techPosts).set(post).where(eq(techPosts.id, id)).returning()) as unknown as TechPost[];
+    return result[0] || undefined;
   }
 
   async deleteTechPost(id: number): Promise<void> {
@@ -97,22 +97,22 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAllTutorials(): Promise<Tutorial[]> {
-    return db.select().from(tutorials).orderBy(desc(tutorials.date));
+    return (await db.select().from(tutorials).orderBy(desc(tutorials.date))) as unknown as Tutorial[];
   }
 
   async getTutorial(id: number): Promise<Tutorial | undefined> {
-    const [tutorial] = await db.select().from(tutorials).where(eq(tutorials.id, id));
-    return tutorial || undefined;
+    const result = (await db.select().from(tutorials).where(eq(tutorials.id, id))) as unknown as Tutorial[];
+    return result[0] || undefined;
   }
 
   async createTutorial(tutorial: InsertTutorial): Promise<Tutorial> {
-    const [newTutorial] = await db.insert(tutorials).values(tutorial).returning();
-    return newTutorial;
+    const result = (await db.insert(tutorials).values(tutorial).returning()) as unknown as Tutorial[];
+    return result[0];
   }
 
   async updateTutorial(id: number, tutorial: Partial<InsertTutorial>): Promise<Tutorial | undefined> {
-    const [updated] = await db.update(tutorials).set(tutorial).where(eq(tutorials.id, id)).returning();
-    return updated || undefined;
+    const result = (await db.update(tutorials).set(tutorial).where(eq(tutorials.id, id)).returning()) as unknown as Tutorial[];
+    return result[0] || undefined;
   }
 
   async deleteTutorial(id: number): Promise<void> {
@@ -120,22 +120,22 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAllSoftware(): Promise<Software[]> {
-    return db.select().from(software).orderBy(desc(software.date));
+    return (await db.select().from(software).orderBy(desc(software.date))) as unknown as Software[];
   }
 
   async getSoftware(id: number): Promise<Software | undefined> {
-    const [soft] = await db.select().from(software).where(eq(software.id, id));
-    return soft || undefined;
+    const result = (await db.select().from(software).where(eq(software.id, id))) as unknown as Software[];
+    return result[0] || undefined;
   }
 
   async createSoftware(soft: InsertSoftware): Promise<Software> {
-    const [newSoft] = await db.insert(software).values(soft).returning();
-    return newSoft;
+    const result = (await db.insert(software).values(soft).returning()) as unknown as Software[];
+    return result[0];
   }
 
   async updateSoftware(id: number, soft: Partial<InsertSoftware>): Promise<Software | undefined> {
-    const [updated] = await db.update(software).set(soft).where(eq(software.id, id)).returning();
-    return updated || undefined;
+    const result = (await db.update(software).set(soft).where(eq(software.id, id)).returning()) as unknown as Software[];
+    return result[0] || undefined;
   }
 
   async deleteSoftware(id: number): Promise<void> {
@@ -143,22 +143,22 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAllProducts(): Promise<Product[]> {
-    return db.select().from(products).orderBy(desc(products.date));
+    return (await db.select().from(products).orderBy(desc(products.date))) as unknown as Product[];
   }
 
   async getProduct(id: number): Promise<Product | undefined> {
-    const [product] = await db.select().from(products).where(eq(products.id, id));
-    return product || undefined;
+    const result = (await db.select().from(products).where(eq(products.id, id))) as unknown as Product[];
+    return result[0] || undefined;
   }
 
   async createProduct(product: InsertProduct): Promise<Product> {
-    const [newProduct] = await db.insert(products).values(product).returning();
-    return newProduct;
+    const result = (await db.insert(products).values(product).returning()) as unknown as Product[];
+    return result[0];
   }
 
   async updateProduct(id: number, product: Partial<InsertProduct>): Promise<Product | undefined> {
-    const [updated] = await db.update(products).set(product).where(eq(products.id, id)).returning();
-    return updated || undefined;
+    const result = (await db.update(products).set(product).where(eq(products.id, id)).returning()) as unknown as Product[];
+    return result[0] || undefined;
   }
 
   async deleteProduct(id: number): Promise<void> {
@@ -166,22 +166,22 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAdminNote(): Promise<AdminNote | undefined> {
-    const [note] = await db.select().from(adminNotes).orderBy(desc(adminNotes.updatedAt)).limit(1);
-    return note || undefined;
+    const result = (await db.select().from(adminNotes).orderBy(desc(adminNotes.updatedAt)).limit(1)) as unknown as AdminNote[];
+    return result[0] || undefined;
   }
 
   async saveAdminNote(note: InsertAdminNote): Promise<AdminNote> {
     const existing = await this.getAdminNote();
     if (existing) {
-      const [updated] = await db
+      const result = (await db
         .update(adminNotes)
         .set({ content: note.content, updatedAt: new Date() })
         .where(eq(adminNotes.id, existing.id))
-        .returning();
-      return updated;
+        .returning()) as unknown as AdminNote[];
+      return result[0];
     } else {
-      const [newNote] = await db.insert(adminNotes).values(note).returning();
-      return newNote;
+      const result = (await db.insert(adminNotes).values(note).returning()) as unknown as AdminNote[];
+      return result[0];
     }
   }
 }

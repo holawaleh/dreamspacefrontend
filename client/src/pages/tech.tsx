@@ -60,7 +60,7 @@ export default function Tech() {
                       {post.category}
                     </Badge>
                     <span className="text-xs text-muted-foreground">
-                      {new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {post.date ? new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : ""}
                     </span>
                   </div>
                   <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors line-clamp-2">
