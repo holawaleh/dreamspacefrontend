@@ -56,7 +56,7 @@ export default function Home() {
             </Badge>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-bold leading-tight">
               Tech Affairs & <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-accent">
                 Innovative Hub
               </span>
             </h1>
@@ -143,7 +143,7 @@ export default function Home() {
               <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow border-none shadow-md">
                 <div className="aspect-video bg-muted relative group overflow-hidden">
                   <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-60" />
                   <div className="absolute bottom-4 left-4 right-4">
                     <Badge className="mb-2 bg-primary hover:bg-primary">{post.category}</Badge>
                     <h3 className="text-white font-bold text-lg line-clamp-2">{post.title}</h3>
@@ -185,7 +185,7 @@ function FeatureCard({ title, desc, icon, image, link }: { title: string, desc: 
       >
         <div className="absolute inset-0">
           <img src={image} alt={title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-black/80 group-hover:via-black/40 transition-colors" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/50 to-black/80 group-hover:via-black/40 transition-colors" />
         </div>
         
         <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">

@@ -19,7 +19,7 @@ export default function SoftwarePage() {
     <Layout>
       <div className="container px-4 py-12">
         <div className="flex items-center gap-6 mb-12">
-          <div className="h-24 w-24 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
+          <div className="h-24 w-24 rounded-2xl bg-linear-to-br from-primary to-accent flex items-center justify-center shadow-lg">
             <Download className="h-10 w-10 text-white" />
           </div>
           <div>
